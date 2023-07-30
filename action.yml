@@ -1,0 +1,30 @@
+name: thebongy/version-check
+description: Extracts your project version and checks if a tag with the same version doesn't exist
+author: thebongy
+inputs:
+  file:
+    required: true
+    description: Path to project configuration file (package.json for Nodejs, Cargo.yml for rust supported currently)
+  tagFormat:
+    required: false
+    description: Format string for tag, use ${version} to substitute version
+    default: ${version}
+  failBuild:
+    required: false
+    default: 'true'
+    description: Whether the build should fail if the version didn't change
+outputs:
+  releaseVersion:
+    description: 'The (formatted) version read from the project'
+  rawVersion:
+    description: 'The raw version read from the project configuration file'
+  versionChanged:
+    description: 'true if the version changed, false otherwise'
+  releaseTags:
+    description: 'The list of tags of the version, for use with docker'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
+branding:
+  icon: 'check'
+  color: 'gray-dark'
