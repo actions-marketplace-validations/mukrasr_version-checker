@@ -1,4 +1,4 @@
-# version-check
+# version-checker
 
 This github action extracts your project from a configuration file (like package.json), and checks if a tag with the same version
 doesn't already exist on the repo. If the version is unique, it exports the version number as an output variable from the action, that
