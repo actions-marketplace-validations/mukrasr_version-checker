@@ -80,7 +80,7 @@ async function run(): Promise<void> {
             'releaseTags',
             rawVersion
                 .split('.')
-            // eslint-disable-next-line no-template-curly-in-string
+                // eslint-disable-next-line no-template-curly-in-string
                 .map((_, i, versions) => tagFormat.replace('${version}', versions.slice(0, i + 1).join('.')))
                 .join(','),
         );

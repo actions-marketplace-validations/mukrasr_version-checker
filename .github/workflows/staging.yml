@@ -1,0 +1,14 @@
+name: checker-alpha
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: alpha
+    uses: ./.github/workflows/sw.yml
+    with:
+      build: alpha
+      packagefile: package.json

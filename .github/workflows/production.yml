@@ -1,0 +1,14 @@
+name: checker-release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: release
+    uses: ./.github/workflows/sw.yml
+    with:
+      build: release
+      packagefile: package.json

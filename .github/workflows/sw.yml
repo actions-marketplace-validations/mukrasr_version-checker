@@ -1,0 +1,58 @@
+name: ofpn-web-workflow
+
+on:
+  workflow_call:
+    inputs:
+      build:
+        type: string
+        description: Can be alpha, or release
+        required: true
+      packagefile:
+        type: string
+        required: true
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Check Release Tags
+        id: version_check
+        uses: EndBug/version-check@v2
+
+      - name: Release tag not changed
+        if: steps.version_check.outputs.changed == 'false'
+        run: |
+          echo "Release tag has not changed"
+          exit 1
+
+      - name: Check build type
+        if: ${{ inputs.build != 'alpha' && inputs.build != 'release' }}
+        shell: bash
+        run: |
+          echo "Invalid build. Expected either 'alpha' or 'release'"
+          exit 1
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install packages
+        shell: bash
+        run: npm install
+
+      - name: Test
+        shell: bash
+        run: npm run all
+
+      - name: Tag Release in repository with Release notes
+        if: ${{ inputs.build == 'release' }}
+        run: gh release create ${{ steps.version_check.outputs.version }} -F CHANGELOG.md
