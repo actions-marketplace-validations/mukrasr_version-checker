@@ -1,6 +1,6 @@
-name: thebongy/version-check
+name: mukrasr/version-checker
 description: Extracts your project version and checks if a tag with the same version doesn't exist
-author: thebongy
+author: mukrasr
 inputs:
   file:
     required: true
@@ -11,20 +11,20 @@ inputs:
     default: ${version}
   failBuild:
     required: false
-    default: 'true'
+    default: "true"
     description: Whether the build should fail if the version didn't change
 outputs:
   releaseVersion:
-    description: 'The (formatted) version read from the project'
+    description: "The (formatted) version read from the project"
   rawVersion:
-    description: 'The raw version read from the project configuration file'
+    description: "The raw version read from the project configuration file"
   versionChanged:
-    description: 'true if the version changed, false otherwise'
+    description: "true if the version changed, false otherwise"
   releaseTags:
-    description: 'The list of tags of the version, for use with docker'
+    description: "The list of tags of the version, for use with docker"
 runs:
-  using: 'node12'
-  main: 'dist/index.js'
+  using: "node12"
+  main: "dist/index.js"
 branding:
-  icon: 'check'
-  color: 'gray-dark'
+  icon: "check"
+  color: "gray-dark"
