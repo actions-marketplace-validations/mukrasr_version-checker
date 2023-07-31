@@ -7,8 +7,34 @@ on:
 
 jobs:
   build:
-    name: release
-    uses: ./.github/workflows/sw.yml
-    with:
-      build: release
-      packagefile: package.json
+    name: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Check Release Tags
+        id: version_check
+        uses: EndBug/version-check@v2
+
+      - name: Release tag not changed
+        if: steps.version_check.outputs.changed == 'false'
+        run: |
+          echo "Release tag has not changed"
+          exit 1
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install packages
+        shell: bash
+        run: npm install
+
+      - name: Test
+        shell: bash
+        run: npm run all
+
+      - name: Tag Release in repository with Release notes
+        run: gh release create ${{ steps.version_check.outputs.version }} -F CHANGELOG.md
